@@ -91,6 +91,16 @@ void terminal_putchar(char c) {
     return;
   }
 
+  if (terminal_row >= VGA_HEIGHT){
+    for (size_t y = 0; y < VGA_HEIGHT; y++) {
+      for (size_t x = 0; x < VGA_WIDTH; x++) {
+        const size_t index = y * VGA_WIDTH + x;
+        terminal_buffer[index] = terminal_buffer[(y + 1) * VGA_WIDTH + x];
+      }
+    }
+    terminal_row = VGA_HEIGHT -1;
+  }
+
   terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
   if (++terminal_column == VGA_WIDTH) {
     terminal_column = 0;
@@ -113,21 +123,21 @@ void kernel_main() {
   /* Initialize terminal interface */
   terminal_initialize();
 
-  terminal_color = 4;
+  terminal_setcolor(4);
   terminal_writestring("Hello, kernel World!\n");
 
-  terminal_color = 15;
-  for (int i = 0; i < 6; i++){
+  terminal_setcolor(15);
+  for (int a = 0; a < 6; a++){
     terminal_writestring("Hello, kernel World!\n");
   }
 
-  terminal_color = 1;
-  for (int i = 0; i < 18; i++){
+  terminal_setcolor(1);
+  for (int b = 0; b < 18; b++){
     terminal_writestring("Hello, kernel World!\n");
   }
 
-  terminal_color = 2;
-  for (int i = 0; i < 5; i++){
+  terminal_setcolor(2);
+  for (int j = 0; j < 5; j++){
     terminal_writestring("Hello, kernel World!\n");
   }
 
