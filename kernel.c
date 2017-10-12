@@ -112,12 +112,9 @@ extern "C" /* Use C linkage for kernel_main. */
 void kernel_main() {
   /* Initialize terminal interface */
   terminal_initialize();
-  terminal_color = 12;
 
-  /* Since there is no support for newlines in terminal_putchar
-   * yet, '\n' will produce some VGA specific character instead.
-   * This is normal.
-   */
-
+  terminal_color = 9;
+  terminal_writestring("Hello, kernel World!\n");
+  terminal_color = 4;
   terminal_writestring("Hello, kernel World!\n");
 }
