@@ -113,8 +113,22 @@ void kernel_main() {
   /* Initialize terminal interface */
   terminal_initialize();
 
-  terminal_color = 9;
-  terminal_writestring("Hello, kernel World!\n");
   terminal_color = 4;
   terminal_writestring("Hello, kernel World!\n");
+
+  terminal_color = 15;
+  for (int i = 0; i < 6; i++){
+    terminal_writestring("Hello, kernel World!\n");
+  }
+
+  terminal_color = 1;
+  for (int i = 0; i < 18; i++){
+    terminal_writestring("Hello, kernel World!\n");
+  }
+
+  terminal_color = 2;
+  for (int i = 0; i < 5; i++){
+    terminal_writestring("Hello, kernel World!\n");
+  }
+
 }
