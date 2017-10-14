@@ -95,7 +95,8 @@ void terminal_putchar(char c) {
     for (size_t y = 0; y < VGA_HEIGHT; y++) {
       for (size_t x = 0; x < VGA_WIDTH; x++) {
         const size_t index = y * VGA_WIDTH + x;
-        terminal_buffer[index] = terminal_buffer[(y + 1) * VGA_WIDTH + x];
+        terminal_buffer[(y - 1) * VGA_WIDTH + x] = terminal_buffer[index];
+				terminal_buffer[index] = make_vgaentry(' ', terminal_color); // Clears next line before being written to
       }
     }
     terminal_row = VGA_HEIGHT -1;
@@ -103,17 +104,15 @@ void terminal_putchar(char c) {
 
   terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
   if (++terminal_column == VGA_WIDTH) {
-    terminal_column = 0;
-    if (++terminal_row == VGA_HEIGHT) {
-      terminal_row = 0;
-    }
+    terminal_column = 0; //Sets terminal_column to 0 if terminal_column + 1 == VGA_WIDTH
+		terminal_row++;  //Sets terminal_row to 0 if terminal_row + 1 == VGA_WIDTH
   }
 }
 
 void terminal_writestring(const char* data) {
-  size_t datalen = strlen(data);
+  size_t datalen = strlen(data); //Makes datalen the same size as the data array
   for (size_t i = 0; i < datalen; i++)
-    terminal_putchar(data[i]);
+    terminal_putchar(data[i]); //iterates through the data array, outputting what is stored there
 }
 
 #if defined(__cplusplus)
@@ -123,22 +122,21 @@ void kernel_main() {
   /* Initialize terminal interface */
   terminal_initialize();
 
-  terminal_setcolor(4);
+  terminal_setcolor(COLOR_RED);
   terminal_writestring("Hello, kernel World!\n");
 
-  terminal_setcolor(15);
+  terminal_setcolor(COLOR_WHITE);
   for (int a = 0; a < 6; a++){
     terminal_writestring("Hello, kernel World!\n");
   }
 
-  terminal_setcolor(1);
-  for (int b = 0; b < 18; b++){
+  terminal_setcolor(COLOR_BLUE);
+  for (int b = 0; b < 28; b++){
     terminal_writestring("Hello, kernel World!\n");
   }
 
-  terminal_setcolor(2);
+  terminal_setcolor(COLOR_GREEN);
   for (int j = 0; j < 5; j++){
     terminal_writestring("Hello, kernel World!\n");
   }
-
 }
