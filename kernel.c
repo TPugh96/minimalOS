@@ -90,11 +90,13 @@ void terminal_putchar(char c) {
     terminal_row++;
     return;
   }
-
+  size_t y;
+	size_t x;
+	size_t index;
   if (terminal_row >= VGA_HEIGHT){
-    for (size_t y = 0; y < VGA_HEIGHT; y++) {
-      for (size_t x = 0; x < VGA_WIDTH; x++) {
-        const size_t index = y * VGA_WIDTH + x;
+    for (y = 1; y < VGA_HEIGHT; y++) {
+      for (x = 0; x < VGA_WIDTH; x++) {
+        index = y * VGA_WIDTH + x;
         terminal_buffer[(y - 1) * VGA_WIDTH + x] = terminal_buffer[index];
 				terminal_buffer[index] = make_vgaentry(' ', terminal_color); // Clears next line before being written to
       }
@@ -105,7 +107,9 @@ void terminal_putchar(char c) {
   terminal_putentryat(c, terminal_color, terminal_column, terminal_row);
   if (++terminal_column == VGA_WIDTH) {
     terminal_column = 0; //Sets terminal_column to 0 if terminal_column + 1 == VGA_WIDTH
-		terminal_row++;  //Sets terminal_row to 0 if terminal_row + 1 == VGA_WIDTH
+		terminal_row++;  //Sets terminal_row to 0 if terminal_row + 1 == VGA_WIDTHst size_t index = y+1 * VGA_WIDTH + x;
+        terminal_buffer[(y * VGA_WIDTH) + x] = terminal_buffer[index];
+				terminal_buffer[index] = make_vgaentry(' ', terminal_color); //
   }
 }
 
@@ -131,7 +135,7 @@ void kernel_main() {
   }
 
   terminal_setcolor(COLOR_BLUE);
-  for (int b = 0; b < 28; b++){
+  for (int b = 0; b < 18; b++){
     terminal_writestring("Hello, kernel World!\n");
   }
 
